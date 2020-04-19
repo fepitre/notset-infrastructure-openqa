@@ -1,0 +1,13 @@
+myrtille:
+   host: myrtille.notset.fr
+   user: admin
+   sudo: True
+   priv: /home/user/.ssh/id_rsa
+   tty: True
+
+mure:
+   host: mure.notset.fr
+   user: admin
+   sudo: True
+   priv: /home/user/.ssh/id_rsa
+   tty: True
