@@ -2,12 +2,12 @@ myrtille:
    host: myrtille.notset.fr
    user: admin
    sudo: True
-   priv: /home/user/.ssh/id_rsa
+   priv: /home/admin/.ssh/id_rsa
    tty: True
 
-mure:
-   host: mure.notset.fr
+groseille:
+   host: groseille.notset.fr
    user: admin
    sudo: True
-   priv: /home/user/.ssh/id_rsa
+   priv: /home/admin/.ssh/id_rsa
    tty: True

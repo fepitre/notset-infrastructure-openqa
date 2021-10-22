@@ -9,7 +9,8 @@ openqa-worker:
   pkg.installed:
     - refresh: True
     - pkgs:
-      - openqa-worker
+        - openQA-worker
+      # - openqa-worker
 
 workers-global:
   file.managed:
@@ -80,31 +81,31 @@ openqa-worker-cacheservice-minion:
     - require:
       - service: openqa-worker-cacheservice
 
-# Compatibility with openSuse OpenQA appliance
-/usr/share/qemu/ovmf-x86_64-code.bin:
-  file.symlink:
-    - target: /usr/share/OVMF/OVMF_CODE.fd
+# # Compatibility with openSuse OpenQA appliance
+# /usr/share/qemu/ovmf-x86_64-code.bin:
+#   file.symlink:
+#     - target: /usr/share/OVMF/OVMF_CODE.fd
 
-/usr/share/qemu/ovmf-x86_64-vars.bin:
-  file.symlink:
-    - target: /usr/share/OVMF/OVMF_VARS.fd
+# /usr/share/qemu/ovmf-x86_64-vars.bin:
+#   file.symlink:
+#     - target: /usr/share/OVMF/OVMF_VARS.fd
 
-# Use provided OVMF for MAC in tests repository
-/var/lib/openqa/share/tests/qubesos/utils/:
-  file.directory:
-    - user: _openqa-worker
-    - group: root
-    - mode: 755
-    - makedirs: True
+# # Use provided OVMF for MAC in tests repository
+# /var/lib/openqa/share/tests/qubesos/utils/:
+#   file.directory:
+#     - user: _openqa-worker
+#     - group: root
+#     - mode: 755
+#     - makedirs: True
 
 # Use at least one OpenQA instance as source for the OVMF MAC files
 /var/lib/openqa/share/tests/qubesos/utils/OVMF-mac_CODE.fd:
   file.symlink:
-    - target: /var/lib/openqa/cache/openqa.notset.fr/tests/qubesos/utils/OVMF-mac_CODE.fd
+    - target: /var/lib/openqa/cache/openqa.qubes-os.org/tests/qubesos/utils/OVMF-mac_CODE.fd
 
 /var/lib/openqa/share/tests/qubesos/utils/OVMF-mac_VARS.fd:
   file.symlink:
-    - target: /var/lib/openqa/cache/openqa.notset.fr/tests/qubesos/utils/OVMF-mac_VARS.fd
+    - target: /var/lib/openqa/cache/openqa.qubes-os.org/tests/qubesos/utils/OVMF-mac_VARS.fd
 
 firewalld:
   service.running:
@@ -121,13 +122,13 @@ openqa-worker@{{n}}:
 {% endfor %}
 
 {% for user in users %}
-{% set password = salt['pillar.get']('openqa:users:' + user + ':password', {}) %}
+# {% set password = salt['pillar.get']('openqa:users:' + user + ':password', {}) %}
 {% set sshkey = salt['pillar.get']('openqa:users:' + user + ':sshkey', {}) %}
 {{user}}:
   user.present:
     - shell: /bin/bash
     - home: /home/{{user}}
-    - password: {{password}}
+    # - password: {{password}}
     - groups:
       - wheel
 

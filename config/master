@@ -1,0 +1,11 @@
+root_dir: .
+cachedir: /tmp/salt/cache/salt/master
+ssh_log_file: log/ssh
+state_output: changes
+file_roots:
+  base:
+   - salt
+
+pillar_roots:
+  base:
+   - pillar

@@ -4,5 +4,5 @@ base:
       - grub_intel_nomitigation
    'myrtille':
       - openqa_worker
-   'mure':
+   'groseille':
       - openqa_worker

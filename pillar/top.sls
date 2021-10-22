@@ -1,5 +1,5 @@
 base:
   'myrtille':
     - openqa_worker
-  'mure':
+  'groseille':
     - openqa_worker
