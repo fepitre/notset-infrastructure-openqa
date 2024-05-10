@@ -1,9 +1,10 @@
 {% set worker = grains['id'] %}
 
-{% set hostname =  salt['pillar.get']('openqa:workers:' + worker + ':hostname', {}) %}
-{% set users = salt['pillar.get']('openqa:workers:' + worker + ':users', {}) %}
-{% set pool = salt['pillar.get']('openqa:workers:' + worker + ':pool', 0) %}
-{% set hosts = salt['pillar.get']('openqa:workers:' + worker + ':hosts', {}) %}
+{% set hostname =  salt['pillar.get']('openqa:worker:hostname', {}) %}
+{% set users = salt['pillar.get']('openqa:worker:users', {}) %}
+{% set pool_end = salt['pillar.get']('openqa:worker:pool-end', 1) %}
+{% set pool_start = salt['pillar.get']('openqa:worker:pool-start', 1) %}
+{% set hosts = salt['pillar.get']('openqa:worker:hosts', {}) %}
 
 openqa-worker:
   pkg.installed:
@@ -111,15 +112,20 @@ firewalld:
   service.running:
     - enable: True
 
-{% for n in range(1, pool + 1) %}
+{% for n in range(pool_start, pool_end ) %}
 firewalld-{{n}}:
   cmd.run:
-    - name: firewall-cmd --permanent --add-port=200{{n}}3/tcp
+    - name: firewall-cmd --permanent --add-port={{ 20003 + n * 10}}/tcp
 
 openqa-worker@{{n}}:
   service.running:
     - enable: True
 {% endfor %}
+
+{% if pool_start > 1 %}
+openqa-worker@1:
+  service.masked: []
+{% endif %}
 
 {% for user in users %}
 # {% set password = salt['pillar.get']('openqa:users:' + user + ':password', {}) %}
