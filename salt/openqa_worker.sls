@@ -97,22 +97,18 @@ openqa-worker-cacheservice-minion:
     - target: /usr/share/OVMF/OVMF_VARS.fd
 {% endif %}
 
-# # Use provided OVMF for MAC in tests repository
-# /var/lib/openqa/share/tests/qubesos/utils/:
-#   file.directory:
-#     - user: _openqa-worker
-#     - group: root
-#     - mode: 755
-#     - makedirs: True
+# Use provided OVMF for MAC in tests repository
+/var/lib/openqa/share/tests/qubesos:
+  file.directory:
+    - user: _openqa-worker
+    - group: root
+    - mode: 755
+    - makedirs: True
 
 # Use at least one OpenQA instance as source for the OVMF MAC files
-/var/lib/openqa/share/tests/qubesos/utils/OVMF-mac_CODE.fd:
+/var/lib/openqa/share/tests/qubesos/utils:
   file.symlink:
-    - target: /var/lib/openqa/cache/openqa.qubes-os.org/tests/qubesos/utils/OVMF-mac_CODE.fd
-
-/var/lib/openqa/share/tests/qubesos/utils/OVMF-mac_VARS.fd:
-  file.symlink:
-    - target: /var/lib/openqa/cache/openqa.qubes-os.org/tests/qubesos/utils/OVMF-mac_VARS.fd
+    - target: /var/lib/openqa/cache/openqa.qubes-os.org/tests/qubesos/utils
 
 firewalld:
   service.running:
