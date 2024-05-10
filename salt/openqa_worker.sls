@@ -29,6 +29,7 @@ workers-global:
         CACHEWORKERS = 5
         UPLOAD_CHUNK_SIZE = 10000000
         WORKER_HOSTNAME = {{hostname}}
+        WORKER_CLASS = hdd_download,qemu_x86_64
 
 {% for host in hosts %}
 {% set ip = salt['pillar.get']('openqa:hosts:' + host + ':ip', '') %}
