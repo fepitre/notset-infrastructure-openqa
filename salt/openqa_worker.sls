@@ -10,8 +10,11 @@ openqa-worker:
   pkg.installed:
     - refresh: True
     - pkgs:
+{%- if grains['os'] == 'SUSE' %}
         - openQA-worker
-      # - openqa-worker
+{%- else %}
+        - openqa-worker
+{%- endif %}
 
 workers-global:
   file.managed:
@@ -82,14 +85,16 @@ openqa-worker-cacheservice-minion:
     - require:
       - service: openqa-worker-cacheservice
 
-# # Compatibility with openSuse OpenQA appliance
-# /usr/share/qemu/ovmf-x86_64-code.bin:
-#   file.symlink:
-#     - target: /usr/share/OVMF/OVMF_CODE.fd
+{% if grains['os'] == 'Fedora' %}
+# Compatibility with openSuse OpenQA appliance
+/usr/share/qemu/ovmf-x86_64-code.bin:
+  file.symlink:
+    - target: /usr/share/OVMF/OVMF_CODE.fd
 
-# /usr/share/qemu/ovmf-x86_64-vars.bin:
-#   file.symlink:
-#     - target: /usr/share/OVMF/OVMF_VARS.fd
+/usr/share/qemu/ovmf-x86_64-vars.bin:
+  file.symlink:
+    - target: /usr/share/OVMF/OVMF_VARS.fd
+{% endif %}
 
 # # Use provided OVMF for MAC in tests repository
 # /var/lib/openqa/share/tests/qubesos/utils/:
