@@ -70,7 +70,7 @@ client-{{host}}:
       # For example to cover scripts for generalhw backend.
       
       /proc/cpuinfo r,
-      /usr/bin/rpm rix,
+      /usr/bin/rpm rpx,
       /usr/bin/sort rix,
       /usr/bin/base64 rix,
       /usr/bin/tar rix,
