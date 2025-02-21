@@ -30,6 +30,7 @@ workers-global:
         UPLOAD_CHUNK_SIZE = 10000000
         WORKER_HOSTNAME = {{hostname}}
         WORKER_CLASS = hdd_download,qemu_x86_64{{ ",smep" if "smep" in grains['cpu_flags'] else "" }}
+        PACKAGES_CMD = rpm -qa | sort
 
 {% for host in hosts %}
 {% set ip = salt['pillar.get']('openqa:hosts:' + host + ':ip', '') %}
@@ -61,6 +62,31 @@ client-{{host}}:
         key = {{key}}
         secret = {{secret}}
 {% endfor %}
+
+/etc/apparmor.d/local/usr.share.openqa.script.worker:
+  file.managed:
+  - contents: |
+      # Site-specific additions and overrides for 'usr.share.openqa.script.worker'
+      # For example to cover scripts for generalhw backend.
+      
+      /proc/cpuinfo r,
+      /usr/bin/rpm rix,
+      /usr/bin/sort rix,
+      /usr/bin/base64 rix,
+      /usr/bin/tar rix,
+      /usr/bin/bash rix,
+      /usr/bin/tesseract rix,
+      /usr/libexec/git/git-write-tree rix,
+      /usr/share/tessdata/* r,
+      /usr/local/bin/qemu-system-* rix,
+      /var/lib/openqa/share/tests/qubesos/utils/* rk,
+      /var/lib/openqa/share/factory/hdd/* rk,
+      /var/lib/openqa/share/factory/hdd/fixed/* rk,
+      /var/lib/openqa/share/factory/iso/* rk,
+      /var/lib/openqa/share/factory/iso/fixed/* rk,
+      /var/lib/openqa/share/factory/repo/** r,
+
+
 
 /var/lib/openqa/share/factory:
   file.directory:
